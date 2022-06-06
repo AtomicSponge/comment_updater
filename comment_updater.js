@@ -77,6 +77,10 @@ const processFile = (inFile, commentBlock) => {
  * @param {*} job 
  */
 const runJob = (job) => {
+    if(job['job'] === undefined || job['block'] === undefined ||
+       job['location'] === undefined || job['extension'] === undefined)
+        scriptError(`Invalid job format.`)
+
     var commentBlock = null
 
     //  Find a matching comment block
