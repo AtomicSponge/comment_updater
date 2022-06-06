@@ -67,8 +67,13 @@ const setDate = () => {
  * Process a single file
  * @param {*} inFile 
  */
-const processFile = (inFile) => {
-    //
+const processFile = (inFile, commentBlock) => {
+    //  Update comment block with variable values
+    commentBlock = commentBlock.replaceAll('$CURRENT_FILENAME', 'filename')
+    commentBlock = commentBlock.replaceAll('$MM', constants.MONTH)
+    commentBlock = commentBlock.replaceAll('$DD', constants.DAY)
+    commentBlock = commentBlock.replaceAll('$YYYY', constants.YEAR)
+    if(settings['author']) commentBlock = commentBlock.replaceAll('$AUTHOR', settings['author'])
 }
 
 /**
@@ -97,7 +102,7 @@ const runJob = (job) => {
                 recursiveJob('folder_location', { withFileTypes: "true" })
             } else {
                 if(false) { // match file ext case
-                    processFile(item)
+                    processFile(item, commentBlock)
                 }
             }
         })
@@ -110,22 +115,11 @@ const runJob = (job) => {
         } else{
             fs.readdirSync(job['location']).forEach(item => {
                 if(false) { // match file ext case
-                    processFile(item)
+                    processFile(item, commentBlock)
                 }
             })
         }
     } catch (err) { scriptError(err) }
-
-    console.log(fileList)
-    fileList.forEach(file => {
-        var workBlock = commentBlock
-        //  Update comment block with variable values
-        workBlock = workBlock.replaceAll('$CURRENT_FILENAME', 'filename')
-        workBlock = workBlock.replaceAll('$MM', constants.MONTH)
-        workBlock = workBlock.replaceAll('$DD', constants.DAY)
-        workBlock = workBlock.replaceAll('$YYYY', constants.YEAR)
-        if(settings['author']) workBlock = workBlock.replaceAll('$AUTHOR', settings['author'])
-    })
 }
 
 /*
