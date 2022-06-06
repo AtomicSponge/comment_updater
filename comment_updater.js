@@ -25,6 +25,9 @@ const fs = require('fs')
  */
 const constants = {
     SETTINGS_FILE: `.comment_updater_config.json`,
+    DAY: null,
+    MONTH: null,
+    YEAR: null
 }
 
 /**
@@ -50,8 +53,27 @@ const loadSettings = () => {
     }
 }
 
+/**
+ * Set the date variables in constants to current values
+ */
+const setDate = () => {
+    const date = new Date()
+    constants.DAY = date.getDate()
+    constants.MONTH = date.getMonth()
+    constants.YEAR = date.getFullYear()
+}
+
 /*
  * Main script
  */
+process.stdout.write(`${colors.CYAN}Comment Updater Script${colors.CLEAR}\n\n`)
 
 const settings = loadSettings()
+setDate()
+
+//  Run each job
+settings['jobs'].forEach(job => {
+    //
+})
+
+process.stdout.write(`\n${colors.GREEN}Done!${colors.CLEAR}\n`)
