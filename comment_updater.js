@@ -93,6 +93,7 @@ const runJob = (job) => {
     commentBlock = commentBlock.replaceAll('$DD', constants.DAY)
     commentBlock = commentBlock.replaceAll('$YYYY', constants.YEAR)
     if(settings['author']) commentBlock = commentBlock.replaceAll('$AUTHOR', settings['author'])
+    if(settings['version']) commentBlock = commentBlock.replaceAll('$VERSION', settings['version'])
 
     /**
      * Run a recurisve job
