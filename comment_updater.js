@@ -68,12 +68,8 @@ const setDate = () => {
  * @param {*} inFile 
  */
 const processFile = (inFile, commentBlock) => {
-    //  Update comment block with variable values
+    //  Update comment block with current filename
     commentBlock = commentBlock.replaceAll('$CURRENT_FILENAME', 'filename')
-    commentBlock = commentBlock.replaceAll('$MM', constants.MONTH)
-    commentBlock = commentBlock.replaceAll('$DD', constants.DAY)
-    commentBlock = commentBlock.replaceAll('$YYYY', constants.YEAR)
-    if(settings['author']) commentBlock = commentBlock.replaceAll('$AUTHOR', settings['author'])
 }
 
 /**
@@ -91,6 +87,12 @@ const runJob = (job) => {
         }
     })
     if(commentBlock == null) scriptError(`No matching comment block found with name '${job['block']}'.`)
+
+    //  Update comment block with variable values
+    commentBlock = commentBlock.replaceAll('$MM', constants.MONTH)
+    commentBlock = commentBlock.replaceAll('$DD', constants.DAY)
+    commentBlock = commentBlock.replaceAll('$YYYY', constants.YEAR)
+    if(settings['author']) commentBlock = commentBlock.replaceAll('$AUTHOR', settings['author'])
 
     /**
      * Run a recurisve job
