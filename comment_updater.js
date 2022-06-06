@@ -64,6 +64,14 @@ const setDate = () => {
 }
 
 /**
+ * Process a single file
+ * @param {*} inFile 
+ */
+const processFile = (inFile) => {
+    //
+}
+
+/**
  * Process each job
  * @param {*} job 
  */
@@ -79,8 +87,36 @@ const runJob = (job) => {
     })
     if(commentBlock == null) scriptError(`No matching comment block found with name '${job['block']}'.`)
 
+    /**
+     * Run a recurisve job
+     * @param {*} fileList Initial location to start
+     */
+    const recursiveJob = (fileList) => {
+        fileList.forEach(item => {
+            if(item === 'folderitem') {
+                recursiveJob('folder_location', { withFileTypes: "true" })
+            } else {
+                if(false) { // match file ext case
+                    processFile(item)
+                }
+            }
+        })
+    }
+
     //  Now process each file in the job
-    var fileList = []
+    try {
+        if(job['recursive']) {
+            recursiveJob(fs.readdirSync(job['location'], { withFileTypes: "true" }))
+        } else{
+            fs.readdirSync(job['location']).forEach(item => {
+                if(false) { // match file ext case
+                    processFile(item)
+                }
+            })
+        }
+    } catch (err) { scriptError(err) }
+
+    console.log(fileList)
     fileList.forEach(file => {
         var workBlock = commentBlock
         //  Update comment block with variable values
