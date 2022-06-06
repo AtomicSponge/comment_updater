@@ -77,6 +77,7 @@ const runJob = (job) => {
             return
         }
     })
+    if(commentBlock == null) scriptError(`No matching comment block found with name '${job['block']}'.`)
 
     //  Now process each file in the job
     var fileList = []
