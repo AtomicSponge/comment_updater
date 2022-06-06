@@ -77,7 +77,7 @@ const processFile = (sourceFile, commentBlock) => {
 
 /**
  * Process each job
- * @param {Object} job 
+ * @param {Object} job An object representing the job task
  */
 const runJob = (job) => {
     if(job['job'] === undefined || job['block'] === undefined ||
