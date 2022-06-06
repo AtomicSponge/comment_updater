@@ -86,7 +86,7 @@ const runJob = (job) => {
         commentBlock = commentBlock.replaceAll('$MM', constants.MONTH)
         commentBlock = commentBlock.replaceAll('$DD', constants.DAY)
         commentBlock = commentBlock.replaceAll('$YYYY', constants.YEAR)
-        if(!settings['author'])
+        if(settings['author'])
             commentBlock = commentBlock.replaceAll('$AUTHOR', settings['author'])
     })
 }
