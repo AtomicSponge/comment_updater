@@ -1,0 +1,11 @@
+.npmignore
+package-lock.json
+node_modules/
+
+*.code-workspace
+.vscode/
+
+.bakignore
+*_bak/
+
+.comment_updater_config.json

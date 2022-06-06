@@ -1,0 +1,24 @@
+{
+    "name": "@spongex/comment_updater",
+    "version": "1.0.0",
+    "description": "Batch updates code comments at the top of source files",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wtfsystems/comment_updater.git"
+    },
+    "keywords": [
+        "programming",
+        "workflow",
+        "script"
+    ],
+    "author": "Matthew Evans",
+    "license": "MIT",
+    "url": "https://www.npmjs.com/package/@spongex/comment_updater",
+    "bugs": {
+        "url": "https://github.com/wtfsystems/comment_updater/issues"
+    },
+    "homepage": "https://github.com/wtfsystems/comment_updater#readme",
+    "bin": {
+        "comment_updater": "./comment_updater.js"
+    }
+}
