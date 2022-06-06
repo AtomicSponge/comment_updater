@@ -82,13 +82,13 @@ const runJob = (job) => {
     //  Now process each file in the job
     var fileList = []
     fileList.forEach(file => {
+        var workBlock = commentBlock
         //  Update comment block with variable values
-        commentBlock = commentBlock.replaceAll('$CURRENT_FILENAME', 'filename')
-        commentBlock = commentBlock.replaceAll('$MM', constants.MONTH)
-        commentBlock = commentBlock.replaceAll('$DD', constants.DAY)
-        commentBlock = commentBlock.replaceAll('$YYYY', constants.YEAR)
-        if(settings['author'])
-            commentBlock = commentBlock.replaceAll('$AUTHOR', settings['author'])
+        workBlock = workBlock.replaceAll('$CURRENT_FILENAME', 'filename')
+        workBlock = workBlock.replaceAll('$MM', constants.MONTH)
+        workBlock = workBlock.replaceAll('$DD', constants.DAY)
+        workBlock = workBlock.replaceAll('$YYYY', constants.YEAR)
+        if(settings['author']) workBlock = workBlock.replaceAll('$AUTHOR', settings['author'])
     })
 }
 
