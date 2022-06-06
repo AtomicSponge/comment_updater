@@ -7,6 +7,7 @@
  */
 
 const fs = require('fs')
+const path = require('path')
 
 /**
  * Font colors
@@ -25,6 +26,7 @@ const fs = require('fs')
  */
 const constants = {
     SETTINGS_FILE: `.comment_updater_config.json`,
+    LOG_FILE: `.comment_updater_$JOB.log`,
     DAY: null,
     MONTH: null,
     YEAR: null
@@ -70,6 +72,7 @@ const setDate = () => {
 const processFile = (inFile, commentBlock) => {
     //  Update comment block with current filename
     commentBlock = commentBlock.replaceAll('$CURRENT_FILENAME', 'filename')
+    console.log(inFile)
 }
 
 /**
@@ -103,29 +106,24 @@ const runJob = (job) => {
      * Run a recurisve job
      * @param {*} fileList Initial location to start
      */
-    const recursiveJob = (fileList) => {
+    const recursiveJob = (location) => {
+        const fileList = fs.readdirSync(location, { withFileTypes: "true" })
         fileList.forEach(item => {
-            if(item === 'folderitem') {
-                recursiveJob('folder_location', { withFileTypes: "true" })
-            } else {
-                if(false) { // match file ext case
-                    processFile(item, commentBlock)
+            if(item.isDirectory()) recursiveJob(`${location}/${item.name}`)
+            else
+                if(item.name.search(job['extension']) != -1) {
+                    processFile(`${location}/${item.name}`, commentBlock)
                 }
-            }
         })
     }
 
     //  Now process each file in the job
     try {
-        if(job['recursive']) {
-            recursiveJob(fs.readdirSync(job['location'], { withFileTypes: "true" }))
-        } else{
+        if(job['recursive']) recursiveJob(job['location'], { withFileTypes: "true" })
+        else
             fs.readdirSync(job['location']).forEach(item => {
-                if(false) { // match file ext case
-                    processFile(item, commentBlock)
-                }
+                if(item.search(job['extension']) != -1) processFile(`${job['location']}/${item}`, commentBlock)
             })
-        }
     } catch (err) { scriptError(err) }
 }
 
