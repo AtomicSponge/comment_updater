@@ -5,17 +5,20 @@ Batch updates code comments at the top of source files
 ```
 {
     "author": "Matthew Evans",
-    "comment_start": "/*!",
-    "comment_end": " */",
-    "line_delimiter": " * ",
     "comment_blocks": [
         {
             "name": "block1",
-            "block": "main block"
+            "block": "main block",
+            "comment_start": "/*!",
+            "comment_end": " */",
+            "line_delimiter": " * "
         },
         {
             "name": "block2",
-            "block": "second block"
+            "block": "second block",
+            "comment_start": "/*!",
+            "comment_end": " */",
+            "line_delimiter": " * "
         }
     ],
     "jobs": [
