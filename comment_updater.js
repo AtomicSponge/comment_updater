@@ -63,6 +63,34 @@ const setDate = () => {
     constants.YEAR = date.getFullYear()
 }
 
+/**
+ * Process each job
+ * @param {*} job 
+ */
+const runJob = (job) => {
+    var commentBlock = null
+
+    //  Find a matching comment block
+    settings['comment_blocks'].forEach(block => {
+        if(block['name'] == job['block']) {
+            commentBlock = block['block']
+            return
+        }
+    })
+
+    //  Now process each file in the job
+    var fileList = []
+    fileList.forEach(file => {
+        //  Update comment block with variable values
+        commentBlock = commentBlock.replaceAll('$CURRENT_FILENAME', 'filename')
+        commentBlock = commentBlock.replaceAll('$MM', constants.MONTH)
+        commentBlock = commentBlock.replaceAll('$DD', constants.DAY)
+        commentBlock = commentBlock.replaceAll('$YYYY', constants.YEAR)
+        if(!settings['author'])
+            commentBlock = commentBlock.replaceAll('$AUTHOR', settings['author'])
+    })
+}
+
 /*
  * Main script
  */
@@ -72,8 +100,6 @@ const settings = loadSettings()
 setDate()
 
 //  Run each job
-settings['jobs'].forEach(job => {
-    //
-})
+settings['jobs'].forEach(job => { runJob(job) })
 
 process.stdout.write(`\n${colors.GREEN}Done!${colors.CLEAR}\n`)
