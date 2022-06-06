@@ -67,17 +67,17 @@ const setDate = () => {
 
 /**
  * Process a single file
- * @param {*} inFile 
+ * @param {String} sourceFile 
  */
-const processFile = (inFile, commentBlock) => {
+const processFile = (sourceFile, commentBlock) => {
     //  Update comment block with current filename
     commentBlock = commentBlock.replaceAll('$CURRENT_FILENAME', 'filename')
-    console.log(inFile)
+    console.log(sourceFile)
 }
 
 /**
  * Process each job
- * @param {*} job 
+ * @param {Object} job 
  */
 const runJob = (job) => {
     if(job['job'] === undefined || job['block'] === undefined ||
