@@ -176,7 +176,7 @@ const runJob = (job) => {
             return
         }
     })
-    if(commentBlock == null) scriptError(`No matching comment block found with name '${job['block']}'.`)
+    if(commentBlock['block'] === undefined) scriptError(`No matching comment block found with name '${job['block']}'.`)
 
     //  Update comment block with variable values
     commentBlock.block = commentBlock.block.replaceAll('$MM', constants.MONTH)
