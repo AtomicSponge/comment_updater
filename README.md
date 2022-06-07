@@ -4,6 +4,8 @@ __WARNING!__  This script mass-modifies source code files.  Use at your own risk
 
 Batch updates code comments at the top of source files.
 
+Create a __.comment_updater_config.json__ file in the project folder where the command will be ran.
+See the following example:
 ```
 {
     "author": "Time Lincoln",
