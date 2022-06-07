@@ -124,7 +124,7 @@ const runJob = (job) => {
 
     /**
      * Run a recurisve job
-     * @param {*} fileList Initial location to start
+     * @param {String} location Initial location to start
      */
     const recursiveJob = (location) => {
         const fileList = fs.readdirSync(location, { withFileTypes: "true" })
