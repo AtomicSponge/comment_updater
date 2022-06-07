@@ -29,7 +29,8 @@ const constants = {
     LOG_FILE: `.comment_updater.log`,
     DAY: null,
     MONTH: null,
-    YEAR: null
+    YEAR: null,
+    VERBOSE: false
 }
 
 /**
@@ -82,7 +83,8 @@ const writeLog = (message) => {
  * @param {Object} commentBlock The comment block object
  */
 const processFile = (sourceFile, commentBlock) => {
-    if (!settings['nologging']) writeLog(`Processing file:  ${sourceFile}...  `)
+    if(constants.VERBOSE) process.stdout.write(`Processing file:  ${sourceFile}...  `)
+    if(!settings['nologging']) writeLog(`Processing file:  ${sourceFile}...  `)
 
     try{
         //  Update comment block with current filename
@@ -111,7 +113,8 @@ const processFile = (sourceFile, commentBlock) => {
         throw err
     }
 
-    if (!settings['nologging']) writeLog(`Done!\n`)
+    if(constants.VERBOSE) process.stdout.write(`${colors.GREEN}Done!${colors.CLEAR}\n`)
+    if(!settings['nologging']) writeLog(`Done!\n`)
 }
 
 /**
@@ -125,6 +128,7 @@ const runJob = (job) => {
 
     var commentBlock = {}
 
+    if(constants.VERBOSE) process.stdout.write(`${colors.YELLOW}Running job ${job['job']}...${colors.CLEAR}\n\n`)
     if (!settings['nologging']) writeLog(`Running job ${job['job']}...\n\n`)
 
     //  Find a matching comment block
@@ -188,6 +192,8 @@ settings['comment_blocks'].forEach(block => {
        block['comment_end'] === undefined || block['line_delimiter'] === undefined)
         scriptError('Invalid comment block format.')
 })
+
+if(settings['verbose']) constants.VERBOSE = true
 
 if (!settings['nologging']) {
     //  Remove old log file
