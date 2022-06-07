@@ -71,8 +71,14 @@ const setDate = () => {
  */
 const processFile = (sourceFile, commentBlock) => {
     //  Update comment block with current filename
-    commentBlock = commentBlock.replaceAll('$CURRENT_FILENAME', 'filename')
+    commentBlock.block = commentBlock.block.replaceAll('$CURRENT_FILENAME', 'filename')
+
     const sourceData = fs.readFileSync(sourceFile, 'utf-8')
+
+    var startIDX = sourceData.search(commentBlock.start)
+    var endIDX = sourceData.search(commentBlock.end)
+
+    console.log(`start: ${startIDX}\tend: ${endIDX}`)
 }
 
 /**
@@ -84,23 +90,26 @@ const runJob = (job) => {
        job['location'] === undefined || job['extension'] === undefined)
         scriptError(`Invalid job format.`)
 
-    var commentBlock = null
+    var commentBlock = {}
 
     //  Find a matching comment block
     settings['comment_blocks'].forEach(block => {
         if(block['name'] == job['block']) {
-            commentBlock = block['block']
+            commentBlock.block = block['block']
+            commentBlock.start = block['comment_start']
+            commentBlock.end = block['comment_end']
+            commentBlock.delimiter = block['line_delimiter']
             return
         }
     })
     if(commentBlock == null) scriptError(`No matching comment block found with name '${job['block']}'.`)
 
     //  Update comment block with variable values
-    commentBlock = commentBlock.replaceAll('$MM', constants.MONTH)
-    commentBlock = commentBlock.replaceAll('$DD', constants.DAY)
-    commentBlock = commentBlock.replaceAll('$YYYY', constants.YEAR)
-    if(settings['author']) commentBlock = commentBlock.replaceAll('$AUTHOR', settings['author'])
-    if(settings['version']) commentBlock = commentBlock.replaceAll('$VERSION', settings['version'])
+    commentBlock.block = commentBlock.block.replaceAll('$MM', constants.MONTH)
+    commentBlock.block = commentBlock.block.replaceAll('$DD', constants.DAY)
+    commentBlock.block = commentBlock.block.replaceAll('$YYYY', constants.YEAR)
+    if(settings['author']) commentBlock.block = commentBlock.block.replaceAll('$AUTHOR', settings['author'])
+    if(settings['version']) commentBlock.block = commentBlock.block.replaceAll('$VERSION', settings['version'])
 
     /**
      * Run a recurisve job
