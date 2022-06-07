@@ -26,7 +26,7 @@ const path = require('path')
  */
 const constants = {
     SETTINGS_FILE: `.comment_updater_config.json`,
-    LOG_FILE: `.comment_updater_$JOB.log`,
+    LOG_FILE: `.comment_updater.log`,
     DAY: null,
     MONTH: null,
     YEAR: null
@@ -66,32 +66,52 @@ const setDate = () => {
 }
 
 /**
+ * Write a message to the log file
+ * @param {String} message String to write
+ * @throws Error on fail then exits script
+ */
+const writeLog = (message) => {
+    try {
+        fs.appendFileSync(`${process.cwd()}/${constants.LOG_FILE}`, message)
+    } catch (err) { scriptError(err) }
+}
+
+/**
  * Process a single file
  * @param {String} sourceFile Filename to edit
  * @param {Object} commentBlock The comment block object
  */
 const processFile = (sourceFile, commentBlock) => {
-    //  Update comment block with current filename
-    const sourceFileName = sourceFile.substring(1 + sourceFile.lastIndexOf('/'))
-    commentBlock.block = commentBlock.block.replaceAll('$CURRENT_FILENAME', sourceFileName)
+    if (!settings['nologging']) writeLog(`Processing file:  ${sourceFile}...  `)
 
-    //  Format new comment block
-    var newBlock = commentBlock.block.split('\n')
-    for(let i = 0; i < newBlock.length; i++) {
-        newBlock[i] = `${commentBlock.delimiter}${newBlock[i]}`
+    try{
+        //  Update comment block with current filename
+        const sourceFileName = sourceFile.substring(1 + sourceFile.lastIndexOf('/'))
+        commentBlock.block = commentBlock.block.replaceAll('$CURRENT_FILENAME', sourceFileName)
+
+        //  Format new comment block
+        var newBlock = commentBlock.block.split('\n')
+        for(let i = 0; i < newBlock.length; i++) {
+            newBlock[i] = `${commentBlock.delimiter}${newBlock[i]}`
+        }
+
+        var sourceData = fs.readFileSync(sourceFile, 'utf-8').split('\n')
+
+        //  Find start/end of top comment block
+        const startIDX = sourceData.findIndex(item => item == commentBlock.start)
+        const endIDX = sourceData.findIndex(item => item == commentBlock.end)
+
+        //  Splice in the new block
+        sourceData.splice(startIDX + 1, endIDX - 1, ...newBlock)
+
+        fs.unlinkSync(sourceFile)
+        fs.appendFileSync(sourceFile, sourceData.join('\n'))
+    } catch (err) {
+        if (!settings['nologging']) writeLog(`ERROR!\n\n${err}\n\nScript canceled!`)
+        throw err
     }
 
-    var sourceData = fs.readFileSync(sourceFile, 'utf-8').split('\n')
-
-    //  Find start/end of top comment block
-    const startIDX = sourceData.findIndex(item => item == commentBlock.start)
-    const endIDX = sourceData.findIndex(item => item == commentBlock.end)
-
-    //  Splice in the new block
-    sourceData.splice(startIDX + 1, endIDX - 1, ...newBlock)
-
-    fs.unlinkSync(sourceFile)
-    fs.appendFileSync(sourceFile, sourceData.join('\n'))
+    if (!settings['nologging']) writeLog(`Done!\n`)
 }
 
 /**
@@ -104,6 +124,8 @@ const runJob = (job) => {
         scriptError(`Invalid job format.`)
 
     var commentBlock = {}
+
+    if (!settings['nologging']) writeLog(`Running job ${job['job']}...\n\n`)
 
     //  Find a matching comment block
     settings['comment_blocks'].forEach(block => {
@@ -148,6 +170,8 @@ const runJob = (job) => {
                     processFile(`${job['location']}/${item}`, commentBlock)
             })
     } catch (err) { scriptError(err) }
+
+    if (!settings['nologging']) writeLog(`--------------------------------------------------\n\n`)
 }
 
 /*
@@ -164,6 +188,20 @@ settings['comment_blocks'].forEach(block => {
        block['comment_end'] === undefined || block['line_delimiter'] === undefined)
         scriptError('Invalid comment block format.')
 })
+
+if (!settings['nologging']) {
+    //  Remove old log file
+    try {
+        fs.unlinkSync(`${process.cwd()}/${constants.LOG_FILE}`)
+    } catch (err) {}
+
+    //  Create new log file
+    const date = new Date()
+    const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()]
+    const [hour, minutes, seconds] = [date.getHours(), date.getMinutes(), date.getSeconds()]
+    writeLog(`Comment Updater Script Log File\n`)
+    writeLog(`Last ran: ${month}-${day}-${year} ${hour}:${minutes}:${seconds}\n\n`)
+}
 
 //  Run each job
 settings['jobs'].forEach(job => { runJob(job) })
