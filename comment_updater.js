@@ -46,15 +46,19 @@ const scriptError = (message) => {
 /**
  * Converts script arguments from array to object
  * @param {Array} args Argument array
+ * @param {Object} commands Object representing a list of commands
  * @returns {Object} Argument object
  */
-const parseArgs = (args, values) => {
+const parseArgs = (args, commands) => {
     _args = {}
-    values.forEach(command => {
-        command.flags // see if an arg was passed, need to split on ,
-        if(false) { // see if arg contains =
-            //  Set a value
-        } else _args[command.name] = true  //  Set a flag
+    //  Build the object using supplied command names
+    commands.forEach(command => {
+        (command.name.includes('=') ?
+            _args[command.name] = null : _args[command.name] = false)
+    })
+    //  Now parse the arguments
+    args.forEach(arg => {
+        //
     })
     return _args
 }
@@ -123,8 +127,9 @@ const processFile = (sourceFile, commentBlock) => {
         //  Splice in the new block
         sourceData.splice(startIDX + 1, endIDX - 1, ...newBlock)
 
-        fs.unlinkSync(sourceFile)
-        fs.appendFileSync(sourceFile, sourceData.join('\n'))
+        //fs.unlinkSync(sourceFile)
+        //fs.appendFileSync(sourceFile, sourceData.join('\n'))
+        console.log(sourceData.join('\n'))
     } catch (err) {
         if(constants.LOG) writeLog(`ERROR!\n\n${err}\n\nScript canceled!`)
         throw err
@@ -203,10 +208,9 @@ const runJob = (job) => {
  */
 process.stdout.write(`${colors.CYAN}Comment Updater Script${colors.CLEAR}\n\n`)
 
-const args = parseArgs(``,
-    [ { name: 'verbose', flags: '-v, --verbose' },
-      { name: 'nologging', flags: '--nologging' } ]
-)
+const args = parseArgs(process.argv, [
+    { name: 'verbose', flags: '-v, --verbose' },
+    { name: 'nologging', flags: '--nologging' } ])
 const settings = loadSettings()
 setDate()
 
