@@ -171,7 +171,7 @@ const runJob = (job) => {
             })
     } catch (err) { scriptError(err) }
 
-    if (!settings['nologging']) writeLog(`--------------------------------------------------\n\n`)
+    if (!settings['nologging']) writeLog(`\n--------------------------------------------------\n\n`)
 }
 
 /*
