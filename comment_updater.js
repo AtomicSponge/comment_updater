@@ -139,7 +139,7 @@ const runJob = (job) => {
 
     //  Now process each file in the job
     try {
-        if(job['recursive']) recursiveJob(job['location'], { withFileTypes: "true" })
+        if(job['recursive']) recursiveJob(job['location'])
         else
             fs.readdirSync(job['location']).forEach(item => {
                 if(item.search(job['extension']) != -1)
