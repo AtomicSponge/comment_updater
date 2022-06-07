@@ -1,21 +1,23 @@
 # Comment Updater NodeJS Script
 
-Batch updates code comments at the top of source files
+__WARNING!__  This script mass-modifies source code files.  Use at your own risk!
+
+Batch updates code comments at the top of source files.
 
 ```
 {
-    "author": "Matthew Evans",
+    "author": "Time Lincoln",
     "comment_blocks": [
         {
             "name": "block1",
-            "block": "main block",
+            "block": "\\author: $AUTHOR\n\\version:  $VERSION\n\\date:  2019-$YYYY",
             "comment_start": "/*!",
             "comment_end": " */",
             "line_delimiter": " * "
         },
         {
             "name": "block2",
-            "block": "second block",
+            "block": "second block\nlazy example",
             "comment_start": "/*!",
             "comment_end": " */",
             "line_delimiter": " * "
@@ -33,8 +35,7 @@ Batch updates code comments at the top of source files
             "job": "Header files",
             "block": "block1",
             "location": "/home/matthew/Projects/wtengine/include/wtengine",
-            "extension": ".hpp",
-            "recursive": "true"
+            "extension": ".hpp"
         }
     ]
 }
