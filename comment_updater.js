@@ -117,7 +117,8 @@ const writeLog = (message) => {
  * @param {Object} commentBlock The comment block object
  */
 const processFile = (sourceFile, commentBlock) => {
-    if(constants.VERBOSE) process.stdout.write(`Processing file:  ${sourceFile}...  `)
+    if(constants.VERBOSE) process.stdout.write(
+        `${colors.YELLOW}${colors.DIM}Processing file:${colors.CLEAR}  ${sourceFile}...  `)
     if(constants.LOG) writeLog(`Processing file:  ${sourceFile}...  `)
 
     try{
@@ -163,7 +164,7 @@ const runJob = (job) => {
 
     var commentBlock = {}
 
-    if(constants.VERBOSE) process.stdout.write(`${colors.YELLOW}Running job ${job['job']}...${colors.CLEAR}\n\n`)
+    if(constants.VERBOSE) process.stdout.write(`\n${colors.YELLOW}Running job ${job['job']}...${colors.CLEAR}\n`)
     if(constants.LOG) writeLog(`Running job ${job['job']}...\n\n`)
 
     //  Find a matching comment block
@@ -182,6 +183,7 @@ const runJob = (job) => {
     commentBlock.block = commentBlock.block.replaceAll('$MM', constants.MONTH)
     commentBlock.block = commentBlock.block.replaceAll('$DD', constants.DAY)
     commentBlock.block = commentBlock.block.replaceAll('$YYYY', constants.YEAR)
+    if(settings['project']) commentBlock.block = commentBlock.block.replaceAll('$PROJECT', settings['project'])
     if(settings['author']) commentBlock.block = commentBlock.block.replaceAll('$AUTHOR', settings['author'])
     if(settings['version']) commentBlock.block = commentBlock.block.replaceAll('$VERSION', settings['version'])
     if(settings['copyright']) commentBlock.block = commentBlock.block.replaceAll('$COPYRIGHT', settings['copyright'])
