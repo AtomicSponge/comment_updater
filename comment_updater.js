@@ -197,11 +197,11 @@ settings['comment_blocks'].forEach(block => {
 if(settings['verbose']) constants.VERBOSE = true
 if(settings['nologging']) constants.LOG = false
 
-if (constants.LOG) {
+if(constants.LOG) {
     //  Remove old log file
     try {
         fs.unlinkSync(`${process.cwd()}/${constants.LOG_FILE}`)
-    } catch (err) {}
+    } catch (err) { scriptError(err) }
 
     //  Create new log file
     const date = new Date()
