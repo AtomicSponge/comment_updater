@@ -72,7 +72,13 @@ const setDate = () => {
  */
 const processFile = (sourceFile, commentBlock) => {
     //  Update comment block with current filename
-    commentBlock.block = commentBlock.block.replaceAll('$CURRENT_FILENAME', 'filename')
+    const sourceFileName = null
+    commentBlock.block = commentBlock.block.replaceAll('$CURRENT_FILENAME', sourceFileName)
+
+    var newBlock = commentBlock.block.split('\n')
+    for(var i = 1; i < newBlock.lenght - 1; i++) {
+        newBlock[i] = commentBlock.delimiter + newBlock[i]
+    }
 
     var sourceData = fs.readFileSync(sourceFile, 'utf-8').split('\n')
 
