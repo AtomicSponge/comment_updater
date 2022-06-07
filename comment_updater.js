@@ -87,8 +87,9 @@ const processFile = (sourceFile, commentBlock) => {
 
     sourceData.splice(startIDX + 1, endIDX - 1, ...newBlock)
 
-    //console.log(`start: ${startIDX}\tend: ${endIDX}`)
     console.log(sourceData)
+    //fs.unlinkSync(sourceFile)
+    //fs.appendFileSync(sourceFile, sourceData)
 }
 
 /**
@@ -154,6 +155,13 @@ process.stdout.write(`${colors.CYAN}Comment Updater Script${colors.CLEAR}\n\n`)
 
 const settings = loadSettings()
 setDate()
+
+//  Verify comment blocks are configured properly
+settings['comment_blocks'].forEach(block => {
+    if(block['block'] === undefined || block['comment_start'] === undefined ||
+       block['comment_end'] === undefined || block['line_delimiter'] === undefined)
+        scriptError('Invalid comment block format.')
+})
 
 //  Run each job
 settings['jobs'].forEach(job => { runJob(job) })
