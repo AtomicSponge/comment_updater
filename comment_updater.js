@@ -30,7 +30,8 @@ const constants = {
     DAY: null,
     MONTH: null,
     YEAR: null,
-    VERBOSE: false
+    VERBOSE: false,
+    LOG: true
 }
 
 /**
@@ -84,7 +85,7 @@ const writeLog = (message) => {
  */
 const processFile = (sourceFile, commentBlock) => {
     if(constants.VERBOSE) process.stdout.write(`Processing file:  ${sourceFile}...  `)
-    if(!settings['nologging']) writeLog(`Processing file:  ${sourceFile}...  `)
+    if(constants.LOG) writeLog(`Processing file:  ${sourceFile}...  `)
 
     try{
         //  Update comment block with current filename
@@ -109,12 +110,12 @@ const processFile = (sourceFile, commentBlock) => {
         fs.unlinkSync(sourceFile)
         fs.appendFileSync(sourceFile, sourceData.join('\n'))
     } catch (err) {
-        if (!settings['nologging']) writeLog(`ERROR!\n\n${err}\n\nScript canceled!`)
+        if(constants.LOG) writeLog(`ERROR!\n\n${err}\n\nScript canceled!`)
         throw err
     }
 
     if(constants.VERBOSE) process.stdout.write(`${colors.GREEN}Done!${colors.CLEAR}\n`)
-    if(!settings['nologging']) writeLog(`Done!\n`)
+    if(constants.LOG) writeLog(`Done!\n`)
 }
 
 /**
@@ -129,7 +130,7 @@ const runJob = (job) => {
     var commentBlock = {}
 
     if(constants.VERBOSE) process.stdout.write(`${colors.YELLOW}Running job ${job['job']}...${colors.CLEAR}\n\n`)
-    if (!settings['nologging']) writeLog(`Running job ${job['job']}...\n\n`)
+    if(constants.LOG) writeLog(`Running job ${job['job']}...\n\n`)
 
     //  Find a matching comment block
     settings['comment_blocks'].forEach(block => {
@@ -175,7 +176,7 @@ const runJob = (job) => {
             })
     } catch (err) { scriptError(err) }
 
-    if (!settings['nologging']) writeLog(`\n--------------------------------------------------\n\n`)
+    if(constants.LOG) writeLog(`\n--------------------------------------------------\n\n`)
 }
 
 /*
@@ -194,8 +195,9 @@ settings['comment_blocks'].forEach(block => {
 })
 
 if(settings['verbose']) constants.VERBOSE = true
+if(settings['nologging']) constants.LOG = false
 
-if (!settings['nologging']) {
+if (constants.LOG) {
     //  Remove old log file
     try {
         fs.unlinkSync(`${process.cwd()}/${constants.LOG_FILE}`)
