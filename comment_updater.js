@@ -75,6 +75,7 @@ const processFile = (sourceFile, commentBlock) => {
     const sourceFileName = sourceFile.substring(1 + sourceFile.lastIndexOf('/'))
     commentBlock.block = commentBlock.block.replaceAll('$CURRENT_FILENAME', sourceFileName)
 
+    //  Format new comment block
     var newBlock = commentBlock.block.split('\n')
     for(let i = 0; i < newBlock.length; i++) {
         newBlock[i] = `${commentBlock.delimiter}${newBlock[i]}`
@@ -82,14 +83,15 @@ const processFile = (sourceFile, commentBlock) => {
 
     var sourceData = fs.readFileSync(sourceFile, 'utf-8').split('\n')
 
+    //  Find start/end of top comment block
     const startIDX = sourceData.findIndex(item => item == commentBlock.start)
     const endIDX = sourceData.findIndex(item => item == commentBlock.end)
 
+    //  Splice in the new block
     sourceData.splice(startIDX + 1, endIDX - 1, ...newBlock)
 
-    console.log(sourceData)
-    //fs.unlinkSync(sourceFile)
-    //fs.appendFileSync(sourceFile, sourceData)
+    fs.unlinkSync(sourceFile)
+    fs.appendFileSync(sourceFile, sourceData.join('\n'))
 }
 
 /**
