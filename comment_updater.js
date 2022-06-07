@@ -44,6 +44,22 @@ const scriptError = (message) => {
 }
 
 /**
+ * Converts script arguments from array to object
+ * @param {Array} args Argument array
+ * @returns {Object} Argument object
+ */
+const parseArgs = (args, values) => {
+    _args = {}
+    values.forEach(command => {
+        command.flags // see if an arg was passed, need to split on ,
+        if(false) { // see if arg contains =
+            //  Set a value
+        } else _args[command.name] = true  //  Set a flag
+    })
+    return _args
+}
+
+/**
  * Load local settings file
  * @returns Settings JSON object
  * @throws Error on fail then exits script
@@ -187,6 +203,10 @@ const runJob = (job) => {
  */
 process.stdout.write(`${colors.CYAN}Comment Updater Script${colors.CLEAR}\n\n`)
 
+const args = parseArgs(``,
+    [ { name: 'verbose', flags: '-v, --verbose' },
+      { name: 'nologging', flags: '--nologging' } ]
+)
 const settings = loadSettings()
 setDate()
 
@@ -197,8 +217,9 @@ settings['comment_blocks'].forEach(block => {
         scriptError('Invalid comment block format.')
 })
 
-if(settings['verbose']) constants.VERBOSE = true
-if(settings['nologging']) constants.LOG = false
+//  Set logging & verbose flags
+if(settings['verbose'] || args.verbose) constants.VERBOSE = true
+if(settings['nologging'] || args.nologging) constants.LOG = false
 
 if(constants.LOG) {
     //  Remove old log file
