@@ -58,7 +58,20 @@ const parseArgs = (args, commands) => {
     })
     //  Now parse the arguments
     args.forEach(arg => {
-        //
+        var matchMe = null
+        var newVal = null
+        if(arg.includes('=')) {
+            matchMe = arg.substring(0, arg.indexOf('='))
+            newVal = arg.substring(arg.indexOf('=') + 1)
+        } else {
+            matchMe = arg
+            newVal = true
+        }
+        commands.forEach(command => {
+            command.flags.replace(/\s+/g, '').split(',').forEach(item => {
+                if(item == matchMe) _args[command.name] = newVal
+            })
+        })
     })
     return _args
 }
