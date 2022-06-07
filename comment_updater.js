@@ -151,6 +151,8 @@ const runJob = (job) => {
     if(settings['author']) commentBlock.block = commentBlock.block.replaceAll('$AUTHOR', settings['author'])
     if(settings['version']) commentBlock.block = commentBlock.block.replaceAll('$VERSION', settings['version'])
     if(settings['copyright']) commentBlock.block = commentBlock.block.replaceAll('$COPYRIGHT', settings['copyright'])
+    if(settings['email']) commentBlock.block = commentBlock.block.replaceAll('$EMAIL', settings['email'])
+    if(settings['website']) commentBlock.block = commentBlock.block.replaceAll('$WEBSITE', settings['website'])
 
     /**
      * Run a recursive job
