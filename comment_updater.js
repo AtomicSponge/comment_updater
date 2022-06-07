@@ -72,12 +72,12 @@ const setDate = () => {
  */
 const processFile = (sourceFile, commentBlock) => {
     //  Update comment block with current filename
-    const sourceFileName = null
+    const sourceFileName = sourceFile.substring(1 + sourceFile.lastIndexOf('/'))
     commentBlock.block = commentBlock.block.replaceAll('$CURRENT_FILENAME', sourceFileName)
 
     var newBlock = commentBlock.block.split('\n')
-    for(var i = 1; i < newBlock.lenght - 1; i++) {
-        newBlock[i] = commentBlock.delimiter + newBlock[i]
+    for(let i = 0; i < newBlock.length; i++) {
+        newBlock[i] = `${commentBlock.delimiter}${newBlock[i]}`
     }
 
     var sourceData = fs.readFileSync(sourceFile, 'utf-8').split('\n')
@@ -85,7 +85,10 @@ const processFile = (sourceFile, commentBlock) => {
     const startIDX = sourceData.findIndex(item => item == commentBlock.start)
     const endIDX = sourceData.findIndex(item => item == commentBlock.end)
 
-    console.log(`start: ${startIDX}\tend: ${endIDX}`)
+    sourceData.splice(startIDX + 1, endIDX - 1, ...newBlock)
+
+    //console.log(`start: ${startIDX}\tend: ${endIDX}`)
+    console.log(sourceData)
 }
 
 /**
