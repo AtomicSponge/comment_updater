@@ -150,6 +150,7 @@ const runJob = (job) => {
     commentBlock.block = commentBlock.block.replaceAll('$YYYY', constants.YEAR)
     if(settings['author']) commentBlock.block = commentBlock.block.replaceAll('$AUTHOR', settings['author'])
     if(settings['version']) commentBlock.block = commentBlock.block.replaceAll('$VERSION', settings['version'])
+    if(settings['copyright']) commentBlock.block = commentBlock.block.replaceAll('$COPYRIGHT', settings['copyright'])
 
     /**
      * Run a recursive job
