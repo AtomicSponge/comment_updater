@@ -72,7 +72,7 @@ const setDate = () => {
 const processFile = (sourceFile, commentBlock) => {
     //  Update comment block with current filename
     commentBlock = commentBlock.replaceAll('$CURRENT_FILENAME', 'filename')
-    console.log(sourceFile)
+    const sourceData = fs.readFileSync(sourceFile, 'utf-8')
 }
 
 /**
@@ -122,7 +122,8 @@ const runJob = (job) => {
         if(job['recursive']) recursiveJob(job['location'], { withFileTypes: "true" })
         else
             fs.readdirSync(job['location']).forEach(item => {
-                if(item.search(job['extension']) != -1) processFile(`${job['location']}/${item}`, commentBlock)
+                if(item.search(job['extension']) != -1)
+                    processFile(`${job['location']}/${item}`, commentBlock)
             })
     } catch (err) { scriptError(err) }
 }
