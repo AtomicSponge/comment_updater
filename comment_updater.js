@@ -123,7 +123,7 @@ const runJob = (job) => {
     if(settings['version']) commentBlock.block = commentBlock.block.replaceAll('$VERSION', settings['version'])
 
     /**
-     * Run a recurisve job
+     * Run a recursive job
      * @param {String} location Initial location to start
      */
     const recursiveJob = (location) => {
