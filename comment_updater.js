@@ -67,16 +67,17 @@ const setDate = () => {
 
 /**
  * Process a single file
- * @param {String} sourceFile 
+ * @param {String} sourceFile Filename to edit
+ * @param {Object} commentBlock The comment block object
  */
 const processFile = (sourceFile, commentBlock) => {
     //  Update comment block with current filename
     commentBlock.block = commentBlock.block.replaceAll('$CURRENT_FILENAME', 'filename')
 
-    const sourceData = fs.readFileSync(sourceFile, 'utf-8')
+    var sourceData = fs.readFileSync(sourceFile, 'utf-8').split('\n')
 
-    var startIDX = sourceData.search(commentBlock.start)
-    var endIDX = sourceData.search(commentBlock.end)
+    const startIDX = sourceData.findIndex(item => item == commentBlock.start)
+    const endIDX = sourceData.findIndex(item => item == commentBlock.end)
 
     console.log(`start: ${startIDX}\tend: ${endIDX}`)
 }
