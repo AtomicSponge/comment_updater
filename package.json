@@ -1,6 +1,6 @@
 {
     "name": "@spongex/comment_updater",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Batch updates code comments at the top of source files",
     "repository": {
         "type": "git",
