@@ -42,3 +42,15 @@ See the following example:
     ]
 }
 ```
+
+## Variables
+
+The following variables can be used in comment blocks:
+- __$MM__ - Current month in MM format.
+- __$DD__ - Current day in DD format.
+- __$YYYY__ - Current year in DD format.
+- __$PROJECT__ - Project name, set with __settings['project']__
+- __$AUTHOR__ - set with __settings['author']__
+
+## Options
+

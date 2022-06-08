@@ -142,9 +142,8 @@ const processFile = (sourceFile, commentBlock) => {
         //  Splice in the new block
         sourceData.splice(startIDX + 1, endIDX - 1, ...newBlock)
 
-        //fs.unlinkSync(sourceFile)
-        //fs.appendFileSync(sourceFile, sourceData.join('\n'))
-        console.log(sourceData.join('\n'))
+        fs.unlinkSync(sourceFile)
+        fs.appendFileSync(sourceFile, sourceData.join('\n'))
     } catch (err) {
         if(constants.LOG) writeLog(`ERROR!\n\n${err}\n\nScript canceled!`)
         throw err
@@ -222,7 +221,7 @@ const runJob = (job) => {
 /*
  * Main script
  */
-process.stdout.write(`${colors.CYAN}Comment Updater Script${colors.CLEAR}\n\n`)
+process.stdout.write(`${colors.CYAN}Comment Updater Script${colors.CLEAR}\n`)
 
 const args = parseArgs(process.argv, [
     { name: 'verbose', flags: '-v, --verbose' },
