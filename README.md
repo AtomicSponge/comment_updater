@@ -43,14 +43,26 @@ See the following example:
 }
 ```
 
+A file __.comment_updater.log__ will be created with the results of the run.
+
 ## Variables
 
 The following variables can be used in comment blocks:
 - __$MM__ - Current month in MM format.
 - __$DD__ - Current day in DD format.
 - __$YYYY__ - Current year in DD format.
-- __$PROJECT__ - Project name, set with __settings['project']__
-- __$AUTHOR__ - set with __settings['author']__
+- __$PROJECT__ - Set with __settings['project']__
+- __$AUTHOR__ - Set with __settings['author']__
+- __$VERSION__ - Set with __settings['version']__
+- __$COPYRIGHT__ - Set with __settings['copyright']__
+- __$EMAIL__ - Set with __settings['email']__
+- __$WEBSITE__ - Set with __settings['website']__
+- __$CURRENT_FILENAME__ - The name of the file being edited.
 
-## Options
+## Optional Options
 
+The following optional options can also be set:
+- __settings['verbose']__ - Show additional output.
+- __settings['nologging']__ - Disable logging.
+
+These can also be set on the command line using *-v* or *--verbose* and *--nologging*.
