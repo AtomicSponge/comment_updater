@@ -76,3 +76,5 @@ The following optional options can also be set:
 - __settings['nologging']__ - Disable logging.
 
 These can also be set on the command line using *-v* or *--verbose* and *--nologging*.
+
+Passing the *-t* or *--test* option will not modify files but instead show the output to console.
