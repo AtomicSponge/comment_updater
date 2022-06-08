@@ -117,6 +117,7 @@ const writeLog = (message) => {
  * @param {Object} commentBlock The comment block object
  */
 const processFile = (sourceFile, commentBlock) => {
+    var tempBlock = Object.assign({}, commentBlock)
     if(constants.VERBOSE) process.stdout.write(
         `${colors.YELLOW}${colors.DIM}Processing file:${colors.CLEAR}  ${sourceFile}...  `)
     if(constants.LOG) writeLog(`Processing file:  ${sourceFile}...  `)
@@ -124,19 +125,19 @@ const processFile = (sourceFile, commentBlock) => {
     try{
         //  Update comment block with current filename
         const sourceFileName = sourceFile.substring(1 + sourceFile.lastIndexOf('/'))
-        commentBlock.block = commentBlock.block.replaceAll('$CURRENT_FILENAME', sourceFileName)
+        tempBlock.block = tempBlock.block.replaceAll('$CURRENT_FILENAME', sourceFileName)
 
         //  Format new comment block
-        var newBlock = commentBlock.block.split('\n')
+        var newBlock = tempBlock.block.split('\n')
         for(let i = 0; i < newBlock.length; i++) {
-            newBlock[i] = `${commentBlock.delimiter}${newBlock[i]}`
+            newBlock[i] = `${tempBlock.delimiter}${newBlock[i]}`
         }
 
         var sourceData = fs.readFileSync(sourceFile, 'utf-8').split('\n')
 
         //  Find start/end of top comment block
-        const startIDX = sourceData.findIndex(item => item == commentBlock.start)
-        const endIDX = sourceData.findIndex(item => item == commentBlock.end)
+        const startIDX = sourceData.findIndex(item => item == tempBlock.start)
+        const endIDX = sourceData.findIndex(item => item == tempBlock.end)
 
         //  Splice in the new block
         sourceData.splice(startIDX + 1, endIDX - 1, ...newBlock)
