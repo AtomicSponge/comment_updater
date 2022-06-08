@@ -31,7 +31,8 @@ const constants = {
     MONTH: null,
     YEAR: null,
     VERBOSE: false,
-    LOG: true
+    LOG: true,
+    TESTING: false
 }
 
 /**
@@ -142,8 +143,12 @@ const processFile = (sourceFile, commentBlock) => {
         //  Splice in the new block
         sourceData.splice(startIDX + 1, endIDX - 1, ...newBlock)
 
-        fs.unlinkSync(sourceFile)
-        fs.appendFileSync(sourceFile, sourceData.join('\n'))
+        if(constants.TESTING) {
+            process.stdout.write(`\n${sourceData.join('\n')}`)
+        } else {
+            fs.unlinkSync(sourceFile)
+            fs.appendFileSync(sourceFile, sourceData.join('\n'))
+        }
     } catch (err) {
         if(constants.LOG) writeLog(`ERROR!\n\n${err}\n\nScript canceled!`)
         throw err
@@ -225,7 +230,8 @@ process.stdout.write(`${colors.CYAN}Comment Updater Script${colors.CLEAR}\n`)
 
 const args = parseArgs(process.argv, [
     { name: 'verbose', flags: '-v, --verbose' },
-    { name: 'nologging', flags: '--nologging' } ])
+    { name: 'nologging', flags: '--nologging' },
+    { name: 'testing', flags: '-t, --test, --testing'} ])
 const settings = loadSettings()
 setDate()
 
@@ -236,9 +242,10 @@ settings['comment_blocks'].forEach(block => {
         scriptError('Invalid comment block format.')
 })
 
-//  Set logging & verbose flags
+//  Set flags
 if(settings['verbose'] || args.verbose) constants.VERBOSE = true
 if(settings['nologging'] || args.nologging) constants.LOG = false
+if(args.testing) constants.TESTING = true
 
 if(constants.LOG) {
     //  Remove old log file

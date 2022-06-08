@@ -2,6 +2,16 @@
 
 __WARNING!__  This script mass-modifies source code files.  Use at your own risk!
 
+Install globally:
+```
+npm i -g @spongex/comment_updater
+```
+
+Or per-project as a dev-dependency:
+```
+npm i @spongex/comment_updater --save-dev
+```
+
 Batch updates code comments at the top of source files.
 
 Create a __.comment_updater_config.json__ file in the project folder where the command will be ran.
