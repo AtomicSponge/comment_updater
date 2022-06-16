@@ -69,9 +69,9 @@ The following variables can be used in comment blocks:
 - __$WEBSITE__ - Set with __settings['website']__
 - __$CURRENT_FILENAME__ - The name of the file being edited.
 
-## Optional Options
+## Optional Settings
 
-The following optional options can also be set:
+The following additional options can also be set:
 - __settings['verbose']__ - Show additional output.
 - __settings['nologging']__ - Disable logging.
 

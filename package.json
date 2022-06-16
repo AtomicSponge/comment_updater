@@ -1,10 +1,10 @@
 {
     "name": "@spongex/comment_updater",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "Batch updates code comments at the top of source files",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/wtfsystems/comment_updater.git"
+        "url": "git+https://github.com/AtomicSponge/comment_updater.git"
     },
     "keywords": [
         "programming",
@@ -15,9 +15,9 @@
     "license": "MIT",
     "url": "https://www.npmjs.com/package/@spongex/comment_updater",
     "bugs": {
-        "url": "https://github.com/wtfsystems/comment_updater/issues"
+        "url": "https://github.com/AtomicSponge/comment_updater/issues"
     },
-    "homepage": "https://github.com/wtfsystems/comment_updater#readme",
+    "homepage": "https://github.com/AtomicSponge/comment_updater#readme",
     "bin": {
         "comment_updater": "./comment_updater.js"
     }
